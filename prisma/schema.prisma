@@ -1,0 +1,34 @@
+generator client {
+  provider             = "prisma-client-py"
+  recursive_type_depth = 5
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model APISpecification {
+  id          String     @id @default(uuid())
+  title       String?
+  raw_content String
+  format      String
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+  endpoints   Endpoint[]
+}
+
+model Endpoint {
+  id               String           @id @default(uuid())
+  spec_id          String
+  specification    APISpecification @relation(fields: [spec_id], references: [id], onDelete: Cascade)
+  method           String
+  path             String
+  summary          String?
+  request_docs     String?
+  response_docs    String?
+  example_payload  Json?
+  validation_rules String?
+  missing_fields   String?
+  created_at       DateTime         @default(now())
+}
