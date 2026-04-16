@@ -32,6 +32,7 @@ Pygments==2.20.0
 pytest==9.0.3
 python-discovery==1.2.2
 python-dotenv==1.2.2
+python-multipart==0.0.26
 PyYAML==6.0.3
 starlette==1.0.0
 tomlkit==0.14.0
