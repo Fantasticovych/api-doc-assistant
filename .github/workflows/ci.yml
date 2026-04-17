@@ -26,6 +26,9 @@ jobs:
           pip install -r requirements.txt
           pip install flake8 pytest pytest-asyncio httpx
 
+      - name: Generate Prisma client
+        run: prisma generate
+
       - name: Run flake8
         run: flake8 .
 
