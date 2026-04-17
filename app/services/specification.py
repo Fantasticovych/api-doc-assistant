@@ -3,6 +3,7 @@ import yaml
 from fastapi import HTTPException
 from app.core.db import db
 from prisma.models import APISpecification
+from app.services.parser import ParserService
 
 
 class SpecificationService:
@@ -33,5 +34,7 @@ class SpecificationService:
         spec = await db.apispecification.create(
             data={"title": filename, "raw_content": content_str, "format": file_format}
         )
+
+        await ParserService.parse_and_store_endpoints(spec)
 
         return spec
