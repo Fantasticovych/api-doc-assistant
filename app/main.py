@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.core.db import lifespan
 from app.api.upload import router as upload_router
+from app.api.documentation import router as documentation_router
 
 app = FastAPI(
     title="API Doc Assistant",
@@ -10,6 +11,7 @@ app = FastAPI(
 )
 
 app.include_router(upload_router, prefix="/api/v1", tags=["Specifications"])
+app.include_router(documentation_router, prefix="/api/v1/documentation", tags=["Documentation"])
 
 
 @app.get("/")

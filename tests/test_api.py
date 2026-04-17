@@ -39,3 +39,16 @@ def test_upload_specification(mock_process_and_save, client, mock_spec_model):
     data = response.json()
     assert data["id"] == mock_spec_model.id
     assert data["format"] == mock_spec_model.format
+
+
+@patch("app.api.documentation.DocumentationService.generate_docs_for_spec")
+def test_generate_documentation_endpoint(mock_generate, client):
+    test_spec_id = "84391d86-eaed-4044-8f1c-dc38e0cdb4db"
+
+    response = client.post(f"/api/v1/documentation/{test_spec_id}/generate")
+
+    assert response.status_code == 200
+
+    data = response.json()
+    assert data["message"] == "AI documentation generation started in the background."
+    assert data["spec_id"] == test_spec_id
