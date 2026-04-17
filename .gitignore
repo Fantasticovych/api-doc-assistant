@@ -3,11 +3,15 @@ env/
 .env
 
 __pycache__/
-*.pycв
+*.pyc
 *.pyo
 *.pyd
 
+.pytest_cache/
+.coverage
+
+*.log
+
 .vscode/
 .idea/
-
 .DS_Store
