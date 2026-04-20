@@ -1,25 +1,28 @@
 import json
+import logging
 import yaml
 from app.core.db import db
 from prisma.models import APISpecification
+
+logger = logging.getLogger(__name__)
 
 
 class ParserService:
     @staticmethod
     async def parse_and_store_endpoints(spec: APISpecification):
-        print(f"Starting to parse specification: {spec.id}")
+        logger.info(f"Starting to parse specification: {spec.id}")
 
         if spec.format == "json":
             data = json.loads(spec.raw_content)
         elif spec.format == "yaml":
             data = yaml.safe_load(spec.raw_content)
         else:
-            print("Unsupported format for parsing.")
+            logger.error("Unsupported format for parsing.")
             return
 
         paths = data.get("paths", {})
         if not paths:
-            print("No paths found in the specification.")
+            logger.warning("No paths found in the specification.")
             return
 
         endpoints_data = []
@@ -37,6 +40,6 @@ class ParserService:
 
         if endpoints_data:
             await db.endpoint.create_many(data=endpoints_data)
-            print(f"Successfully parsed and stored {len(endpoints_data)} endpoints.")
+            logger.info(f"Successfully parsed and stored {len(endpoints_data)} endpoints.")
         else:
-            print("No valid endpoints found to store.")
+            logger.warning("No valid endpoints found to store.")
